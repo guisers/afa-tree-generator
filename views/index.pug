@@ -2,4 +2,8 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Please upload a file to generate a tree
+  form(method='POST' action='/generate')
+    label(for='donorData') Donor Data Spreadsheet
+    input(name='donorData' type='file')
+    button(type='submit') Generate!

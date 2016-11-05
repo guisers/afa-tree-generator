@@ -1,0 +1,61 @@
+{
+  "date": "Sat Nov 05 2016 15:35:40 GMT-0700 (PDT)",
+  "donors": [
+    {
+      "name": "Crystal To",
+      "amount": 50
+    },
+    {
+      "name": "Kayla Isomura",
+      "amount": 100
+    },
+    {
+      "name": "Alice",
+      "amount": 20
+    },
+    {
+      "name": "Bob",
+      "amount": 20
+    },
+    {
+      "name": "Chelsea",
+      "amount": 10
+    },
+    {
+      "name": "Dustin",
+      "amount": 20
+    },
+    {
+      "name": "Eleanor",
+      "amount": 500
+    },
+    {
+      "name": "Fred",
+      "amount": 15
+    },
+    {
+      "name": "George",
+      "amount": 60
+    },
+    {
+      "name": "Harold",
+      "amount": 20
+    },
+    {
+      "name": "Ivermore",
+      "amount": 5
+    },
+    {
+      "name": "Justine",
+      "amount": 40
+    },
+    {
+      "name": "Kevin",
+      "amount": 50
+    },
+    {
+      "name": "Leo",
+      "amount": 50
+    }
+  ]
+}

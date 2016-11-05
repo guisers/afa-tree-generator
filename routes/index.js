@@ -1,9 +1,26 @@
-var express = require('express');
-var router = express.Router();
+const testData = require('../test/data') // FOR TESTING
 
-/* GET home page. */
+var express = require('express')
+var router = express.Router()
+
+/* GET landing page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+  res.render('index', {
+    title: 'AFA Christmas Tree Generator'
+  })
+})
 
-module.exports = router;
+/* POST generate a tree. */
+router.post('/generate', function(req, res, next) {
+  res.redirect('/result')
+})
+
+/* GET result page. */
+router.get('/result', function(req, res, next) {
+  res.render('result', {
+    title: 'Generated Tree',
+    donors: testData.donors
+  })
+})
+
+module.exports = router

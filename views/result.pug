@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1= title
+  p Here's your generated HTML:
+  textarea(id='target' readonly)
+  p Your tree will look like this:
+  div(id='source')
+    include tree/base
+  script.
+    $('#target').val($('#source').html())
