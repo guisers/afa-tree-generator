@@ -13,7 +13,7 @@ var Converter = require('csvtojson').Converter;
 
 const indexRender = function(req, res, next) {
   res.render('index', {
-    title: 'AFA Christmas Tree Generator'
+    title: 'Home - Christmas Tree Generator'
   })
 }
 
@@ -21,7 +21,7 @@ const resultRender = function(req, res, next) {
   console.log('Generating tree with the following data:')
   console.log(res.locals.donors)
   res.render('result', {
-    title: 'Generated Tree'
+    title: 'Result - Christmas Tree Generator'
   })
 }
 

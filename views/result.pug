@@ -1,25 +1,34 @@
 extends layout
 
 block content
-  h1= title
+  section.section
+    div.container
+      h1.title.is-1 Result
+      a(href='/')= "<< Back"
   if donors
-    p Here's your generated HTML:
-    textarea(id='target' readonly)
-    button(id='copyToClipboard' type='button' data-clipboard-target='#target') Copy to clipboard
-    p(id='tooltip' style='display:none') Copied!
-    p Your tree will look like this:
-    div(id='source')
-      include tree/base
-    script.
-      $('#target').val($('#source').html());
-      var clipboard = new Clipboard('#copyToClipboard');
-      clipboard.on('success', function(e) {
-          e.clearSelection();
-          $('#tooltip').show();
-          setTimeout(function() {
-            $('#tooltip').hide();
-          }, 2000)
-      });
+    section.section
+      div.container
+        h3.title.is-3 Here's your generated HTML:
+        textarea#target.textarea(readonly)
+        div.level.margin-top
+          div.level-left
+            div.level-item
+              button#copyToClipboard.button.is-primary(
+                type='button'
+                data-clipboard-target='#target'
+              ) Copy to clipboard
+            div.level-item
+              span#tooltip.help.is-success(style='display:none') Copied!
+          div.level-right
+    section.section
+      div.container
+        h3.title.is-3 Preview:
+        div.box.control.is-loading
+          iframe#iframe(style='width:100%')
+        div#source(style='display:none')
+          include tree/base
+    script(src='/javascripts/result.js')
+
   else
     p Something's wrong...
     a(href='/') Go home

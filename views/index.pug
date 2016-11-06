@@ -1,9 +1,16 @@
 extends layout
 
 block content
-  h1= title
-  p Please upload a file to generate a tree
-  form(method='POST' action='/generate' enctype='multipart/form-data')
-    label(for='donorData') Donor Data Spreadsheet
-    input(name='donorData' type='file' accept='.csv')
-    button(type='submit') Generate!
+  section.section
+    div.container
+      h1.title.is-1 Christmas Tree Generator
+  section.section
+    div.container
+      div.content.
+        Pick a .csv file to upload, then click <strong>Generate</strong> to get your custom HTML!
+      form(method='POST' action='/generate' enctype='multipart/form-data')
+        p.control
+          input(name='donorData' type='file' accept='.csv' required)
+        p.control.margin-top-lg
+          button.button.is-primary(type='submit') Generate!
+          a.button.is-link(href="mailto:crystal.kyto@gmail.com") Help
