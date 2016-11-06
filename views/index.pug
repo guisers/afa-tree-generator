@@ -7,7 +7,7 @@ block content
   section.section
     div.container
       div.content.
-        Pick a .csv file to upload, then click <strong>Generate</strong> to get your custom HTML!
+        Pick a .csv file to upload, then click <strong>Generate</strong> to get your custom HTML! Click <a href="/assets/donor_data_template.csv" download="donor_data">here</a> to download a template file if you don't have one already.
       form(method='POST' action='/generate' enctype='multipart/form-data')
         p.control
           input(name='donorData' type='file' accept='.csv' required)

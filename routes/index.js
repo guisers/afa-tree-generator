@@ -1,5 +1,3 @@
-const testData = require('../test/data') // FOR TESTING
-
 var express = require('express')
 var router = express.Router()
 
@@ -30,6 +28,10 @@ const fileParser = function(req, res, next) {
   const csvString = file.buffer.toString()
   const converter = new Converter({});
   converter.fromString(csvString, function(err, result) {
+    if (err) {
+      console.log("ERROR: Couldn't convert csvstring to json...")
+      console.log(err)
+    }
     res.locals.donors = result
     return next()
   })
