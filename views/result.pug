@@ -5,11 +5,21 @@ block content
   if donors
     p Here's your generated HTML:
     textarea(id='target' readonly)
+    button(id='copyToClipboard' type='button' data-clipboard-target='#target') Copy to clipboard
+    p(id='tooltip' style='display:none') Copied!
     p Your tree will look like this:
     div(id='source')
       include tree/base
     script.
-      $('#target').val($('#source').html())
+      $('#target').val($('#source').html());
+      var clipboard = new Clipboard('#copyToClipboard');
+      clipboard.on('success', function(e) {
+          e.clearSelection();
+          $('#tooltip').show();
+          setTimeout(function() {
+            $('#tooltip').hide();
+          }, 2000)
+      });
   else
     p Something's wrong...
     a(href='/') Go home
