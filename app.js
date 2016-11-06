@@ -4,10 +4,18 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var auth = require('http-auth');
 
 var index = require('./routes/index');
 
 var app = express();
+
+// set up authentication
+var basicAuth = auth.basic({
+    realm: 'Secrets',
+    file: __dirname + '/htpasswd'
+});
+app.use(auth.connect(basicAuth));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
