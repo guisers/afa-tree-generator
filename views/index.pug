@@ -3,7 +3,7 @@ extends layout
 block content
   h1= title
   p Please upload a file to generate a tree
-  form(method='POST' action='/generate')
+  form(method='POST' action='/generate' enctype='multipart/form-data')
     label(for='donorData') Donor Data Spreadsheet
-    input(name='donorData' type='file')
+    input(name='donorData' type='file' accept='.csv')
     button(type='submit') Generate!
