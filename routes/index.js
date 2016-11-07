@@ -42,7 +42,7 @@ const getRandom = function(max, min=0) {
   return Math.floor((Math.random() * max) + min);
 }
 
-const getValidPosition = function(pixels, width, height) {
+const getColoredPixel = function(pixels, width, height, itemWidth, itemHeight) {
   var x
   var y
   var start_alpha
@@ -55,21 +55,54 @@ const getValidPosition = function(pixels, width, height) {
     // 3 is alpha channel, 0 is red channel
     start_alpha = pixels.get(x, y, 3)
     start_red = pixels.get(x, y, 0)
-    // 30, 46 is bottom-right corner of bauble
-    end_alpha = pixels.get(x+30, y+46, 3)
-    end_red = pixels.get(x+30, y+46, 0)
+    end_alpha = pixels.get(x+itemWidth, y+itemHeight, 3)
+    end_red = pixels.get(x+itemWidth, y+itemHeight, 0)
   } while (start_alpha === 0 || end_alpha === 0 || start_red === 203 || end_red === 203)
+
   return {x, y}
 }
 
-const positionCalculator = function(req, res, next) {
+const isOverlappingPixels = function(existing, proposed, itemWidth, itemHeight) {
+  return (existing.x < proposed.x && proposed.x < existing.x + itemWidth
+    || proposed.x < existing.x && existing.x < proposed.x + itemWidth)
+    && (existing.y < proposed.y && proposed.y < existing.y + itemHeight
+    || proposed.y < existing.y && existing.y < proposed.y + itemWidth)
+}
+
+const isOverlappingExistingItems = function(pos, positions, itemWidth, itemHeight) {
+  var isOverlapping = false
+  positions.forEach(function(position) {
+    if (isOverlappingPixels(position, pos, itemWidth, itemHeight)) {
+      isOverlapping = true
+    }
+  })
+  return isOverlapping
+}
+
+const getValidPosition = function(pixels, positions) {
   const height = 1129
   const width = 600
+  const itemWidth = 30
+  const itemHeight = 56
+
+  var result
+
+  do {
+    result = getColoredPixel(pixels, width, height, itemWidth, itemHeight)
+  } while (isOverlappingExistingItems(result, positions, itemWidth, itemHeight))
+
+  return result
+}
+
+const positionCalculator = function(req, res, next) {
+
   var donors = res.locals.donors
 
   getPixels('public/images/tree.png', function(err, pixels) {
+    var positions = []
     donors.forEach(function(donor) {
-      const pos = getValidPosition(pixels, width, height)
+      const pos = getValidPosition(pixels, positions)
+      positions.push(pos)
       donor.x = pos.x
       donor.y = pos.y
       donor.color = getRandom(6)
