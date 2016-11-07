@@ -45,14 +45,20 @@ const getRandom = function(max, min=0) {
 const getValidPosition = function(pixels, width, height) {
   var x
   var y
-  var alpha
-  var red
+  var start_alpha
+  var start_red
+  var end_alpha
+  var end_red
   do {
     x = getRandom(width)
     y = getRandom(height)
-    alpha = pixels.get(x, y, 3) // 3 is alpha channel
-    red = pixels.get(x, y, 0) // 0 is red channel
-  } while (alpha === 0 && red !== 203)
+    // 3 is alpha channel, 0 is red channel
+    start_alpha = pixels.get(x, y, 3)
+    start_red = pixels.get(x, y, 0)
+    // 30, 46 is bottom-right corner of bauble
+    end_alpha = pixels.get(x+30, y+46, 3)
+    end_red = pixels.get(x+30, y+46, 0)
+  } while (start_alpha === 0 || end_alpha === 0 || start_red === 203 || end_red === 203)
   return {x, y}
 }
 
