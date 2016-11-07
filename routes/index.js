@@ -45,28 +45,61 @@ const getRandom = function(max, min=0) {
 const getColoredPixel = function(pixels, width, height, itemWidth, itemHeight) {
   var x
   var y
-  var start_alpha
-  var start_red
-  var end_alpha
-  var end_red
+  var tl_alpha
+  var tl_red
+  var tr_alpha
+  var tr_end
+  var out_of_bounds
+
   do {
     x = getRandom(width)
     y = getRandom(height)
+    if (x + itemWidth > width || y + itemHeight > height) {
+      out_of_bounds = true
+    } else {
+      out_of_bounds = false
+    }
     // 3 is alpha channel, 0 is red channel
-    start_alpha = pixels.get(x, y, 3)
-    start_red = pixels.get(x, y, 0)
-    end_alpha = pixels.get(x+itemWidth, y+itemHeight, 3)
-    end_red = pixels.get(x+itemWidth, y+itemHeight, 0)
-  } while (start_alpha === 0 || end_alpha === 0 || start_red === 203 || end_red === 203)
+    tl_alpha = pixels.get(x, y, 3)
+    tl_red = pixels.get(x, y, 0)
+    tr_alpha = pixels.get(x + itemWidth, y, 3)
+    tr_end = pixels.get(x + itemWidth, y, 0)
+  } while (out_of_bounds || tl_alpha === 0 || tr_alpha === 0 || tl_red === 196 || tr_end === 196)
 
   return {x, y}
 }
 
+const isInRange = function(target, tl, tr, bl) {
+  return tl.x <= target.x && target.x <= tr.x && tl.y <= target.y && target.y <= bl.y
+}
+
 const isOverlappingPixels = function(existing, proposed, itemWidth, itemHeight) {
-  return (existing.x < proposed.x && proposed.x < existing.x + itemWidth
-    || proposed.x < existing.x && existing.x < proposed.x + itemWidth)
-    && (existing.y < proposed.y && proposed.y < existing.y + itemHeight
-    || proposed.y < existing.y && existing.y < proposed.y + itemWidth)
+  const aTopLeft = proposed
+  const aTopRight = {
+    x: proposed.x + itemWidth, 
+    y: proposed.y
+  }
+  const aBottomLeft = {
+    x: proposed.x,
+    y: proposed.y + itemHeight
+  }
+  const aBottomRight = {
+    x: proposed.x + itemWidth, 
+    y: proposed.y + itemHeight
+  }
+  const bTopLeft = existing
+  const bTopRight = {
+    x: existing.x + itemWidth,
+    y: existing.y
+  }
+  const bBottomLeft = {
+    x: existing.x,
+    y: existing.y + itemHeight
+  }
+  return isInRange(aTopLeft, bTopLeft, bTopRight, bBottomLeft)
+    || isInRange(aTopRight, bTopLeft, bTopRight, bBottomLeft)
+    || isInRange(aBottomLeft, bTopLeft, bTopRight, bBottomLeft)
+    || isInRange(aBottomRight, bTopLeft, bTopRight, bBottomLeft)
 }
 
 const isOverlappingExistingItems = function(pos, positions, itemWidth, itemHeight) {
