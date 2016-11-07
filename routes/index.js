@@ -46,11 +46,13 @@ const getValidPosition = function(pixels, width, height) {
   var x
   var y
   var alpha
+  var red
   do {
     x = getRandom(width)
     y = getRandom(height)
     alpha = pixels.get(x, y, 3) // 3 is alpha channel
-  } while (alpha === 0)
+    red = pixels.get(x, y, 0) // 0 is red channel
+  } while (alpha === 0 && red !== 203)
   return {x, y}
 }
 
@@ -64,6 +66,7 @@ const positionCalculator = function(req, res, next) {
       const pos = getValidPosition(pixels, width, height)
       donor.x = pos.x
       donor.y = pos.y
+      donor.color = getRandom(6)
     })
     res.locals.donors = donors
     return next()
