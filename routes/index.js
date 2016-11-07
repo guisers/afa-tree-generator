@@ -1,5 +1,6 @@
 var express = require('express')
 var router = express.Router()
+const getPixels = require('get-pixels')
 
 // File upload utils
 var multer  = require('multer')
@@ -37,11 +38,43 @@ const fileParser = function(req, res, next) {
   })
 }
 
+const getRandom = function(max, min=0) {
+  return Math.floor((Math.random() * max) + min);
+}
+
+const getValidPosition = function(pixels, width, height) {
+  var x
+  var y
+  var alpha
+  do {
+    x = getRandom(width)
+    y = getRandom(height)
+    alpha = pixels.get(x, y, 3) // 3 is alpha channel
+  } while (alpha === 0)
+  return {x, y}
+}
+
+const positionCalculator = function(req, res, next) {
+  const height = 1129
+  const width = 600
+  var donors = res.locals.donors
+
+  getPixels('public/images/tree.png', function(err, pixels) {
+    donors.forEach(function(donor) {
+      const pos = getValidPosition(pixels, width, height)
+      donor.x = pos.x
+      donor.y = pos.y
+    })
+    res.locals.donors = donors
+    return next()
+  })
+}
+
 /* GET landing page. */
 router.get('/', indexRender)
 
 /* POST generate a tree. */
-router.post('/generate', upload.single('donorData'), fileParser, resultRender)
+router.post('/generate', upload.single('donorData'), fileParser, positionCalculator, resultRender)
 
 /* GET generate page. */
 router.get('/generate', function(req, res, next) {

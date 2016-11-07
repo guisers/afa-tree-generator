@@ -1,3 +1,9 @@
-each donor in donors
-  p= donor.name
-  p= donor.amount
+include inline_style
+div.container
+  img#tree(src='/images/tree.png' alt='Christmas Tree')
+  each donor in donors
+    img.bauble(
+      src='/images/bauble-orange.png'
+      alt=donor.name
+      style=`top:${donor.y}; left:${donor.x};`
+    )
