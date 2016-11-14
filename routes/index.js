@@ -46,9 +46,9 @@ const getColoredPixel = function(pixels, width, height, itemWidth, itemHeight) {
   var x
   var y
   var tl_alpha
-  var tl_red
   var tr_alpha
-  var tr_end
+  var bl_alpha
+  var br_alpha
   var out_of_bounds
 
   do {
@@ -59,12 +59,12 @@ const getColoredPixel = function(pixels, width, height, itemWidth, itemHeight) {
     } else {
       out_of_bounds = false
     }
-    // 3 is alpha channel, 0 is red channel
+    // 3 is alpha channel
     tl_alpha = pixels.get(x, y, 3)
-    tl_red = pixels.get(x, y, 0)
     tr_alpha = pixels.get(x + itemWidth, y, 3)
-    tr_end = pixels.get(x + itemWidth, y, 0)
-  } while (out_of_bounds || tl_alpha === 0 || tr_alpha === 0 || tl_red === 196 || tr_end === 196)
+    bl_alpha = pixels.get(x, y + itemHeight, 3)
+    br_alpha = pixels.get(x + itemWidth, y + itemHeight, 3)
+  } while (out_of_bounds || tl_alpha === 0 || tr_alpha === 0 || bl_alpha === 0 || br_alpha === 0)
 
   return {x, y}
 }
@@ -76,7 +76,7 @@ const isInRange = function(target, tl, tr, bl) {
 const isOverlappingPixels = function(existing, proposed, itemWidth, itemHeight) {
   const aTopLeft = proposed
   const aTopRight = {
-    x: proposed.x + itemWidth, 
+    x: proposed.x + itemWidth,
     y: proposed.y
   }
   const aBottomLeft = {
@@ -84,7 +84,7 @@ const isOverlappingPixels = function(existing, proposed, itemWidth, itemHeight) 
     y: proposed.y + itemHeight
   }
   const aBottomRight = {
-    x: proposed.x + itemWidth, 
+    x: proposed.x + itemWidth,
     y: proposed.y + itemHeight
   }
   const bTopLeft = existing
@@ -113,7 +113,7 @@ const isOverlappingExistingItems = function(pos, positions, itemWidth, itemHeigh
 }
 
 const getValidPosition = function(pixels, positions) {
-  const height = 1129
+  const height = 910
   const width = 600
   const itemWidth = 30
   const itemHeight = 56
@@ -131,7 +131,7 @@ const positionCalculator = function(req, res, next) {
 
   var donors = res.locals.donors
 
-  getPixels('public/images/tree.png', function(err, pixels) {
+  getPixels('public/images/tree_map.png', function(err, pixels) {
     var positions = []
     donors.forEach(function(donor) {
       const pos = getValidPosition(pixels, positions)
