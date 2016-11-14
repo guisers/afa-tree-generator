@@ -5,9 +5,9 @@ var html = $('#source').html();
 var $iframe = $('#iframe');
 $iframe.ready(function() {
   $iframe.contents().find('body').append(html);
-  $('.box.control').removeClass('is-loading');
   $iframe.contents().find('#tree').on('load', function() {
     $iframe.attr('style', `height: ${$iframe[0].contentWindow.document.body.scrollHeight}px; width:100%`);
+    $('.box.control').removeClass('is-loading');
   })
 });
 
