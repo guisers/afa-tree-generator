@@ -119,28 +119,40 @@ const getValidPosition = function(pixels, positions) {
   const itemHeight = 56
 
   var result
+  var count = 0
 
   do {
     result = getColoredPixel(pixels, width, height, itemWidth, itemHeight)
-  } while (isOverlappingExistingItems(result, positions, itemWidth, itemHeight))
+    count++
+  } while (isOverlappingExistingItems(result, positions, itemWidth, itemHeight) && count < 10000)
 
-  return result
+  if (count >= 10000) {
+    throw new Error('Error: There are too many donors and not enough space on the tree.')
+  } else {
+    return result
+  }
 }
 
 const positionCalculator = function(req, res, next) {
-
   var donors = res.locals.donors
 
   getPixels('public/images/tree_map.png', function(err, pixels) {
     var positions = []
-    donors.forEach(function(donor) {
-      const pos = getValidPosition(pixels, positions)
-      positions.push(pos)
-      donor.x = pos.x
-      donor.y = pos.y
-      donor.color = getRandom(6)
-    })
-    res.locals.donors = donors
+    try {
+      donors.forEach(function(donor) {
+        const pos = getValidPosition(pixels, positions)
+        positions.push(pos)
+        donor.x = pos.x
+        donor.y = pos.y
+        donor.color = getRandom(6)
+      })
+      console.log('Successfully placed all baubles')
+      res.locals.donors = donors
+    } catch (e) {
+      console.log(e)
+      res.locals.donors = null
+      res.locals.error = e
+    }
     return next()
   })
 }

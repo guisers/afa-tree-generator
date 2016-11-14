@@ -31,5 +31,11 @@ block content
     script(src='/javascripts/result.js')
 
   else
-    p Something's wrong...
-    a(href='/') Go home
+    section.section
+      div.container
+        if error
+          h6.title.is-6= error.message
+          a(href='/') Try again.
+        else
+          h6.title.is-6 Something's wrong...
+          a(href='/') Go home
