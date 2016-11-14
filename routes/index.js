@@ -49,6 +49,10 @@ const getColoredPixel = function(pixels, width, height, itemWidth, itemHeight) {
   var tr_alpha
   var bl_alpha
   var br_alpha
+  var mt_alpha
+  var ml_alpha
+  var mr_alpha
+  var mb_alpha
   var out_of_bounds
 
   do {
@@ -64,7 +68,16 @@ const getColoredPixel = function(pixels, width, height, itemWidth, itemHeight) {
     tr_alpha = pixels.get(x + itemWidth, y, 3)
     bl_alpha = pixels.get(x, y + itemHeight, 3)
     br_alpha = pixels.get(x + itemWidth, y + itemHeight, 3)
-  } while (out_of_bounds || tl_alpha === 0 || tr_alpha === 0 || bl_alpha === 0 || br_alpha === 0)
+    mt_alpha = pixels.get(x + Math.floor(itemWidth / 2), y, 3)
+    ml_alpha = pixels.get(x, y + Math.floor(itemHeight / 2), 3)
+    mr_alpha = pixels.get(x + itemWidth, y + Math.floor(itemHeight / 2), 3)
+    mb_alpha = pixels.get(x + Math.floor(itemWidth / 2), y + itemHeight, 3)
+  } while (out_of_bounds
+    || tl_alpha === 0 || tr_alpha === 0
+    || bl_alpha === 0 || br_alpha === 0
+    || mt_alpha === 0 || ml_alpha === 0
+    || mr_alpha === 0 || mb_alpha === 0
+  )
 
   return {x, y}
 }
@@ -124,11 +137,12 @@ const getValidPosition = function(pixels, positions) {
   do {
     result = getColoredPixel(pixels, width, height, itemWidth, itemHeight)
     count++
-  } while (isOverlappingExistingItems(result, positions, itemWidth, itemHeight) && count < 10000)
+  } while (isOverlappingExistingItems(result, positions, itemWidth, itemHeight) && count < 50000)
 
-  if (count >= 10000) {
+  if (count >= 50000) {
     throw new Error('Error: There are too many donors and not enough space on the tree.')
   } else {
+    console.log('Count is ' + count)
     return result
   }
 }
