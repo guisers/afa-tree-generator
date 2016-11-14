@@ -25,6 +25,11 @@ const resultRender = function(req, res, next) {
 }
 
 const fileParser = function(req, res, next) {
+  if (req.body.baubleSize) {
+    res.locals.baubleSize = parseInt(req.body.baubleSize)
+  } else {
+    res.locals.baubleSize = 30
+  }
   const file = req.file
   const csvString = file.buffer.toString()
   const converter = new Converter({});
@@ -125,11 +130,10 @@ const isOverlappingExistingItems = function(pos, positions, itemWidth, itemHeigh
   return isOverlapping
 }
 
-const getValidPosition = function(pixels, positions) {
+const getValidPosition = function(pixels, positions, itemWidth) {
   const height = 910
   const width = 600
-  const itemWidth = 30
-  const itemHeight = 56
+  const itemHeight = Math.ceil(itemWidth * 56 / 30)
 
   var result
   var count = 0
@@ -154,7 +158,7 @@ const positionCalculator = function(req, res, next) {
     var positions = []
     try {
       donors.forEach(function(donor) {
-        const pos = getValidPosition(pixels, positions)
+        const pos = getValidPosition(pixels, positions, res.locals.baubleSize)
         positions.push(pos)
         donor.x = pos.x
         donor.y = pos.y
