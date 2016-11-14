@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "node ./bin/www",
-    "debug": "node debug ./bin/www"
+    "debug": "node debug ./bin/www",
+    "images:sync": "aws s3 sync public/images/ s3://afa-tree-generator --acl public-read --exclude \".DS_Store\""
   },
   "dependencies": {
     "body-parser": "~1.15.2",
