@@ -17,8 +17,8 @@ const indexRender = function(req, res, next) {
 }
 
 const resultRender = function(req, res, next) {
-  console.log('Generating tree with the following data:')
-  console.log(res.locals.donors)
+  // console.log('Generating tree with the following data:')
+  // console.log(res.locals.donors)
   res.render('result', {
     title: 'Result - Christmas Tree Generator'
   })
@@ -142,7 +142,7 @@ const getValidPosition = function(pixels, positions) {
   if (count >= 50000) {
     throw new Error('Error: There are too many donors and not enough space on the tree.')
   } else {
-    console.log('Count is ' + count)
+    // console.log('Count is ' + count)
     return result
   }
 }
