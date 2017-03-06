@@ -1,0 +1,10 @@
+div#snow
+  img#result(src='https://s3-us-west-2.amazonaws.com/afa-tree-generator/tree.png' alt='Christmas Tree')
+  each donor in donors
+    div.bauble-container(style=`top:${donor.y}px; left:${donor.x}px;`)
+      img.bauble(
+        src=`https://s3-us-west-2.amazonaws.com/afa-tree-generator/bauble-${donor.color}.png`
+        alt=donor.name
+        width=`${baubleSize} px`
+      )
+      div.bauble-tooltip(data-balloon=`${donor.name}` data-balloon-pos="bottom")
