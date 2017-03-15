@@ -5,10 +5,10 @@ var html = $('#source').html();
 var $iframe = $('#iframe');
 $iframe.ready(function() {
   $iframe.contents().find('body').append(html);
-  $iframe.contents().find('#result').on('load', function() {
+  // $iframe.contents().find('#result').on('load', function() {
     $iframe.attr('style', `height: ${$iframe[0].contentWindow.document.body.scrollHeight}px; width:100%`);
     $('.box.control').removeClass('is-loading');
-  })
+  // })
 });
 
 // Put it into textarea for copying

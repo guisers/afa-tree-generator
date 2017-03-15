@@ -4,6 +4,16 @@ style.
     width: 600px;
     position: absolute;
   }
+  .result-container {
+    width: 600px;
+    height: 645px;
+    position: relative;
+    background-image: url('https://s3-us-west-2.amazonaws.com/afa-tree-generator/field.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    /*perspective: 500px;
+    perspective-origin: 50% 10%;*/
+  }
   .bauble-container {
     position: absolute;
   }
@@ -14,15 +24,6 @@ style.
     top: 0;
     left: 0;
     z-index: 2;
-  }
-  .result-container {
-    width: 600px;
-    height: 958px;
-    position: relative;
-  }
-  .preview-container {
-    background: url('https://s3-us-west-2.amazonaws.com/afa-tree-generator/background.png');
-    background-repeat: no-repeat;
   }
   .box.control.is-loading * {
     display: none;
@@ -122,7 +123,7 @@ style.
   }
 
   /* swing effect modified from https://github.com/daneden/animate.css */
-  @-webkit-keyframes swing {
+  /*@-webkit-keyframes swing {
     20% {
       -webkit-transform: rotate3d(0, 0, 1, 15deg);
       transform: rotate3d(0, 0, 1, 15deg);
@@ -185,4 +186,4 @@ style.
     animation-duration: 1s;
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
-  }
+  }*/

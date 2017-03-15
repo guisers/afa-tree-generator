@@ -12,7 +12,7 @@ var Converter = require('csvtojson').Converter;
 
 const indexRender = function(req, res, next) {
   res.render('index', {
-    title: 'Home - Christmas Tree Generator'
+    title: 'Home - Image Generator'
   })
 }
 
@@ -20,7 +20,7 @@ const resultRender = function(req, res, next) {
   // console.log('Generating tree with the following data:')
   // console.log(res.locals.donors)
   res.render('result', {
-    title: 'Result - Christmas Tree Generator'
+    title: 'Result - Image Generator'
   })
 }
 
@@ -131,9 +131,9 @@ const isOverlappingExistingItems = function(pos, positions, itemWidth, itemHeigh
 }
 
 const getValidPosition = function(pixels, positions, itemWidth) {
-  const height = 910
+  const height = 645
   const width = 600
-  const itemHeight = Math.ceil(itemWidth * 56 / 30)
+  const itemHeight = Math.ceil(itemWidth * 71 / 73)
 
   var result
   var count = 0
@@ -144,7 +144,7 @@ const getValidPosition = function(pixels, positions, itemWidth) {
   } while (isOverlappingExistingItems(result, positions, itemWidth, itemHeight) && count < 50000)
 
   if (count >= 50000) {
-    throw new Error('Error: There are too many donors and not enough space on the tree.')
+    throw new Error('Error: There are too many donors and not enough space on the image.')
   } else {
     // console.log('Count is ' + count)
     return result
@@ -154,7 +154,7 @@ const getValidPosition = function(pixels, positions, itemWidth) {
 const positionCalculator = function(req, res, next) {
   var donors = res.locals.donors
 
-  getPixels('public/images/tree_map.png', function(err, pixels) {
+  getPixels('public/images/field_map.png', function(err, pixels) {
     var positions = []
     try {
       donors.forEach(function(donor) {
@@ -162,7 +162,7 @@ const positionCalculator = function(req, res, next) {
         positions.push(pos)
         donor.x = pos.x
         donor.y = pos.y
-        donor.color = getRandom(6)
+        donor.color = getRandom(9)
       })
       console.log('Successfully placed all baubles')
       res.locals.donors = donors
@@ -175,11 +175,24 @@ const positionCalculator = function(req, res, next) {
   })
 }
 
+const sizeCalculator = function(req, res, next) {
+  if (!res.locals.error) {
+    var donors = res.locals.donors
+    const maxSize = res.locals.baubleSize
+    const height = 645
+    donors.forEach(function(donor) {
+      const y = donor.y
+      donor.width = donor.y * maxSize / height
+    })
+  }
+  return next()
+}
+
 /* GET landing page. */
 router.get('/', indexRender)
 
 /* POST generate a tree. */
-router.post('/generate', upload.single('donorData'), fileParser, positionCalculator, resultRender)
+router.post('/generate', upload.single('donorData'), fileParser, positionCalculator, sizeCalculator, resultRender)
 
 /* GET generate page. */
 router.get('/generate', function(req, res, next) {
