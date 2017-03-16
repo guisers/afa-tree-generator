@@ -133,7 +133,7 @@ const isOverlappingExistingItems = function(pos, positions, itemWidth, itemHeigh
 const getValidPosition = function(pixels, positions, itemWidth) {
   const height = 645
   const width = 600
-  const itemHeight = Math.ceil(itemWidth * 71 / 73)
+  const itemHeight = Math.ceil(itemWidth * 77 / 65)
 
   var result
   var count = 0
