@@ -5,36 +5,37 @@ style.
     100% { background-position: -600px; }
   }
 
-  @keyframes run {
-    100% { left: 600px; }
+  @keyframes moveRight {
+    40%, 100% { left: 800px; }
   }
 
-  @keyframes flipX {
-    0%, 100% {
-      -moz-transform: none;
-      -o-transform: none;
-      -webkit-transform: none;
-      transform: none;
-    }
-    50% {
-      -moz-transform: scaleX(-1);
-      -o-transform: scaleX(-1);
-      -webkit-transform: scaleX(-1);
-      transform: scaleX(-1);
-    }
+  @keyframes moveLeft {
+    0%, 50% { left: 600px; }
+    90%, 100% { left: -300px; }
+  }
+  .bunny {
+    position: absolute;
+    z-index: 1000;
   }
 
-  #bunny {
+  .bunny.orig {
     width: 150px;
     height: 148px;
     background: url('https://s3-us-west-2.amazonaws.com/afa-tree-generator/bunny.png') left center;
     bottom: 25px;
     left: 0px;
-    position: absolute;
-    z-index: 1000;
-    animation: jump 0.8s steps(4) infinite,
-      run 2.4s steps(4) infinite alternate,
-      flipX 4.8s steps(1) infinite;
+    animation: jump 1s steps(4) infinite,
+      moveRight 10s steps(10) infinite;
+  }
+
+  .bunny.flip {
+    width: 75px;
+    height: 74px;
+    background: url('https://s3-us-west-2.amazonaws.com/afa-tree-generator/bunny-flip.png') left center;
+    left: 600px;
+    bottom: 250px;
+    animation: jump 1s steps(4) infinite,
+      moveLeft 10s steps(10) infinite;
   }
 
   #result {
@@ -48,6 +49,7 @@ style.
     background-image: url('https://s3-us-west-2.amazonaws.com/afa-tree-generator/field.png');
     background-size: contain;
     background-repeat: no-repeat;
+    overflow: hidden;
     /*perspective: 500px;
     perspective-origin: 50% 10%;*/
   }
