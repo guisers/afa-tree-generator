@@ -11,8 +11,25 @@ style.
 
   @keyframes moveLeft {
     0%, 50% { left: 600px; }
-    90%, 100% { left: -300px; }
+    70% { left: 200px; }
+    90%, 100% { left: 600px; }
   }
+
+  @keyframes flipX {
+    0%, 100% {
+      -moz-transform: none;
+      -o-transform: none;
+      -webkit-transform: none;
+      transform: none;
+    }
+    40% {
+      -moz-transform: scaleX(-1);
+      -o-transform: scaleX(-1);
+      -webkit-transform: scaleX(-1);
+      transform: scaleX(-1);
+    }
+  }
+
   .bunny {
     position: absolute;
     z-index: 1000;
@@ -35,7 +52,8 @@ style.
     left: 600px;
     bottom: 250px;
     animation: jump 1s steps(4) infinite,
-      moveLeft 10s steps(10) infinite;
+      moveLeft 10s steps(10) infinite,
+      flipX 5s steps(1) infinite;
   }
 
   #result {
